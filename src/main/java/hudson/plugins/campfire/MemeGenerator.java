@@ -28,6 +28,35 @@ class MatchNotFoundException extends Exception {
  * @author jcmuller
  */
 public class MemeGenerator {
+    private String templateType = "AdviceDogSpinoff";
+    private String templateID = "440017";
+    private String generatorName = "Jacques-Cousteau";
+
+    /**
+     *
+     * @param templateType
+     * @param templateID
+     * @param generatorName
+     */
+    public MemeGenerator(String templateType, String templateID, String generatorName) {
+        if (! "".equals(templateType)) {
+            this.templateType = templateType;
+        }
+
+        if (! "".equals(templateID)) {
+            this.templateID = templateID;
+        }
+
+        if (! "".equals(generatorName)) {
+            this.generatorName = generatorName;
+        }
+    }
+
+    /**
+     * Default constructor
+     */
+    public MemeGenerator() {
+    }
 
     /**
      * This will generate a meme from http://memegenerator.net/Instance/CreateOrEdit
@@ -36,17 +65,17 @@ public class MemeGenerator {
      * @return memeUrlString
      * @throws MatchNotFoundException
      */
-    public static String generate(String topString, String bottomString) throws MatchNotFoundException {
+    public String generate(String topString, String bottomString) throws MatchNotFoundException {
         URL url;
         String result = "";
 
         try {
             // Construct data
-            String data = URLEncoder.encode("templateType", "UTF-8") + "=" + URLEncoder.encode("AdviceDogSpinoff", "UTF-8");
-            data += "&" + URLEncoder.encode("text0", "UTF-8") + "=" + URLEncoder.encode(topString, "UTF-8");
-            data += "&" + URLEncoder.encode("text1", "UTF-8") + "=" + URLEncoder.encode(bottomString, "UTF-8");
-            data += "&" + URLEncoder.encode("templateID", "UTF-8") + "=" + URLEncoder.encode("440017", "UTF-8");
-            data += "&" + URLEncoder.encode("generatorName", "UTF-8") + "=" + URLEncoder.encode("Jacques-Cousteau", "UTF-8");
+            String data = URLEncoder.encode("templateType", "UTF-8")  + "=" + URLEncoder.encode(templateType, "UTF-8");
+            data += "&" + URLEncoder.encode("text0", "UTF-8")         + "=" + URLEncoder.encode(topString, "UTF-8");
+            data += "&" + URLEncoder.encode("text1", "UTF-8")         + "=" + URLEncoder.encode(bottomString, "UTF-8");
+            data += "&" + URLEncoder.encode("templateID", "UTF-8")    + "=" + URLEncoder.encode(templateID, "UTF-8");
+            data += "&" + URLEncoder.encode("generatorName", "UTF-8") + "=" + URLEncoder.encode(generatorName, "UTF-8");
 
             // Send data
             url = new URL("http://memegenerator.net/Instance/CreateOrEdit");
@@ -60,7 +89,7 @@ public class MemeGenerator {
             BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
             while ((line = rd.readLine()) != null) {
-                if (line.contains("alt=\"Jacques Cousteau -")) {
+                if (line.contains("<img class=\"large rotated\"")) {
                     Pattern p = Pattern.compile("src=\"(.+?)\"");
                     Matcher m = p.matcher(line);
 
@@ -85,5 +114,19 @@ public class MemeGenerator {
         }
 
         return result;
+    }
+
+    public static void main(String[] args) {
+        try {
+            MemeGenerator meme;
+
+            meme = new MemeGenerator("AdviceDogSpinoff", "440017", "Jacques-Cousteau");
+            System.out.println(meme.generate("Hello", "World!"));
+
+            meme = new MemeGenerator("AdviceDogSpinoff", "457085", "Jacques-Cousteau-FAILURE");
+            System.out.println(meme.generate("Hello", "World!"));
+        } catch (MatchNotFoundException ex) {
+            System.err.println(ex.getMessage());
+        }
     }
 }

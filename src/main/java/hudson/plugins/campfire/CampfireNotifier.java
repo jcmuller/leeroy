@@ -25,6 +25,8 @@ public class CampfireNotifier extends Notifier {
     private Room room;
     private String hudsonUrl;
     private boolean smartNotify;
+    private MemeGenerator memeSuccess;
+    private MemeGenerator memeFailure;
 
     // getter for project configuration..
     // Configured room name should be null unless different from descriptor/global room name
@@ -44,9 +46,13 @@ public class CampfireNotifier extends Notifier {
         initialize();
     }
 
-    public CampfireNotifier(String subdomain, String token, String room, String hudsonUrl, boolean ssl, boolean smartNotify) throws IOException {
+    public CampfireNotifier(String subdomain, String token, String room, String hudsonUrl,
+            boolean ssl, boolean smartNotify, String memeTemplateType, String memeTemplateID,
+            String memeGeneratorName, String memeTemplateIDFailure, String memeGeneratorNameFailure
+    ) throws IOException {
         super();
-        initialize(subdomain, token, room, hudsonUrl, ssl, smartNotify);
+        initialize(subdomain, token, room, hudsonUrl, ssl, smartNotify, memeTemplateType, 
+                memeTemplateID, memeGeneratorName, memeTemplateIDFailure, memeGeneratorNameFailure);
     }
 
     public BuildStepMonitor getRequiredMonitorService() {
@@ -118,7 +124,7 @@ public class CampfireNotifier extends Notifier {
         /*
          * Let's generate a meme for this message.
          */
-        String memeImage = "";
+        String memeResult = "";
         try {
             final int max_length = 6;
             String projectName = build.getProject().getName();
@@ -128,15 +134,21 @@ public class CampfireNotifier extends Notifier {
             }
 
             final String buildId = projectName + " " + build.getDisplayName();
-            memeImage = MemeGenerator.generate(buildId, resultString);
+
+            if (result == Result.SUCCESS) {
+                memeResult = memeSuccess.generate(buildId, resultString);
+            } else {
+                memeResult = memeFailure.generate(buildId, resultString);
+            }
         } catch (MatchNotFoundException e) {
             LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed: ", e.getMessage()});
+            memeResult = "There was some kind of error generating meme... :(";
         }
 
         room.speak(message);
 
-        if (!memeImage.isEmpty()) {
-            room.speak(memeImage);
+        if (!memeResult.isEmpty()) {
+            room.speak(memeResult);
         }
     }
 
@@ -147,10 +159,25 @@ public class CampfireNotifier extends Notifier {
     }
 
     private void initialize() throws IOException {
-        initialize(DESCRIPTOR.getSubdomain(), DESCRIPTOR.getToken(), DESCRIPTOR.getRoom(), DESCRIPTOR.getHudsonUrl(), DESCRIPTOR.getSsl(), DESCRIPTOR.getSmartNotify());
+        initialize(
+                DESCRIPTOR.getSubdomain(),
+                DESCRIPTOR.getToken(),
+                DESCRIPTOR.getRoom(),
+                DESCRIPTOR.getHudsonUrl(),
+                DESCRIPTOR.getSsl(),
+                DESCRIPTOR.getSmartNotify(),
+                DESCRIPTOR.getMemeTemplateType(),
+                DESCRIPTOR.getMemeTemplateID(),
+                DESCRIPTOR.getMemeGeneratorName(),
+                DESCRIPTOR.getMemeTemplateIDFailure(),
+                DESCRIPTOR.getMemeGeneratorNameFailure()
+         );
     }
 
-    private void initialize(String subdomain, String token, String roomName, String hudsonUrl, boolean ssl, boolean smartNotify) throws IOException {
+    private void initialize(String subdomain, String token, String roomName, String hudsonUrl, 
+            boolean ssl, boolean smartNotify, String memeTemplateType, String memeTemplateID,
+            String memeGeneratorName, String memeTemplateIDFailure, String memeGeneratorNameFailure
+            ) throws IOException {
         campfire = new Campfire(subdomain, token, ssl);
         try {
             this.room = campfire.findRoomByName(roomName);
@@ -166,8 +193,12 @@ public class CampfireNotifier extends Notifier {
         } catch (SAXException e) {
             throw new IOException("Cannot join room: " + e.getMessage());
         }
+        
         this.hudsonUrl = hudsonUrl;
         this.smartNotify = smartNotify;
+
+        this.memeSuccess = new MemeGenerator(memeTemplateType, memeTemplateID, memeGeneratorName);
+        this.memeFailure = new MemeGenerator(memeTemplateType, memeTemplateIDFailure, memeGeneratorNameFailure);
     }
 
     @Override
