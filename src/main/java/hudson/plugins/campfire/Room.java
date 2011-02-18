@@ -1,9 +1,6 @@
 package hudson.plugins.campfire;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Date;
 
 public class Room {
     private transient Campfire campfire;
