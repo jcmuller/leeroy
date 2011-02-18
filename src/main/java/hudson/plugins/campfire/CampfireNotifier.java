@@ -7,13 +7,12 @@ import hudson.Launcher;
 import hudson.model.AbstractBuild;
 import hudson.model.BuildListener;
 import hudson.model.Result;
-import hudson.model.User;
 import hudson.scm.ChangeLogSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.lang.reflect.Method;
 import java.io.*;
-import java.util.regex.Pattern;
+
 
 import java.io.IOException;
 import org.xml.sax.SAXException;
@@ -30,16 +29,14 @@ public class CampfireNotifier extends Notifier {
     // getter for project configuration..
     // Configured room name should be null unless different from descriptor/global room name
     public String getConfiguredRoomName() {
-        if ( DESCRIPTOR.getRoom().equals(room.getName()) ) {
-            return null;   
+        if (DESCRIPTOR.getRoom().equals(room.getName())) {
+            return null;
         } else {
-            return room.getName();  
+            return room.getName();
         }
     }
-
     @Extension
     public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
-
     private static final Logger LOGGER = Logger.getLogger(CampfireNotifier.class.getName());
 
     public CampfireNotifier() throws IOException {
@@ -74,46 +71,73 @@ public class CampfireNotifier extends Notifier {
                     String line;
                     String sha = "";
                     BufferedReader reader = new BufferedReader(new FileReader(changeLogPath));
-                    while((line = reader.readLine()) != null) {
+                    while ((line = reader.readLine()) != null) {
                         if (line.matches("^commit [a-zA-Z0-9]+$")) {
                             sha = line.replace("commit ", "");
                             break;
                         }
                     }
                     reader.close();
-                    if (sha != "") {
+                    if (!sha.equals("")) {
                         Method getIdMethod = entry.getClass().getDeclaredMethod("getId");
-                        for(ChangeLogSet.Entry nextEntry : build.getChangeSet()) {
-                            if ( ( (String)getIdMethod.invoke(entry) ).compareTo(sha) != 0 ) entry = nextEntry;
+                        for (ChangeLogSet.Entry nextEntry : build.getChangeSet()) {
+                            if (((String) getIdMethod.invoke(entry)).compareTo(sha) != 0) {
+                                entry = nextEntry;
+                            }
                         }
                     }
-                } catch ( IOException e ){
-                  LOGGER.log(Level.WARNING, log_warn_prefix + e.getMessage());
-                } catch ( NoSuchMethodException e ) {
-                    LOGGER.log(Level.WARNING, log_warn_prefix + e.getMessage());
-                } catch ( IllegalAccessException e ) {
-                    LOGGER.log(Level.WARNING, log_warn_prefix + e.getMessage());
-                } catch ( SecurityException e ) {
-                    LOGGER.log(Level.WARNING, log_warn_prefix + e.getMessage());
-                } catch ( Exception e ) {
+                } catch (IOException e) {
+                    LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{log_warn_prefix, e.getMessage()});
+                } catch (NoSuchMethodException e) {
+                    LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{log_warn_prefix, e.getMessage()});
+                } catch (IllegalAccessException e) {
+                    LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{log_warn_prefix, e.getMessage()});
+                } catch (SecurityException e) {
+                    LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{log_warn_prefix, e.getMessage()});
+                } catch (Exception e) {
                     throw new RuntimeException(e.getMessage(), e);
                 }
             }
             String commitMsg = entry.getMsg().trim();
-            if (commitMsg != "") {
+            if (!commitMsg.equals("")) {
                 if (commitMsg.length() > 47) {
-                    commitMsg = commitMsg.substring(0, 46)  + "...";
+                    commitMsg = commitMsg.substring(0, 46) + "...";
                 }
                 changeString = commitMsg + " - " + entry.getAuthor().toString();
             }
         }
         String resultString = result.toString();
-        if (!smartNotify && result == Result.SUCCESS) resultString = resultString.toLowerCase();
+        if (!smartNotify && result == Result.SUCCESS) {
+            resultString = resultString.toLowerCase();
+        }
         String message = build.getProject().getName() + " " + build.getDisplayName() + " \"" + changeString + "\": " + resultString;
         if (hudsonUrl != null && hudsonUrl.length() > 1 && (smartNotify || result != Result.SUCCESS)) {
             message = message + " (" + hudsonUrl + build.getUrl() + ")";
         }
+
+        /*
+         * Let's generate a meme for this message.
+         */
+        String memeImage = "";
+        try {
+            final int max_length = 6;
+            String projectName = build.getProject().getName();
+
+            if (projectName.length() >= max_length) {
+                projectName = projectName.substring(0, max_length) + "...";
+            }
+
+            final String buildId = projectName + " " + build.getDisplayName();
+            memeImage = MemeGenerator.generate(buildId, resultString);
+        } catch (MatchNotFoundException e) {
+            LOGGER.log(Level.WARNING, "{0}{1}", new Object[]{"Meme generation failed: ", e.getMessage()});
+        }
+
         room.speak(message);
+
+        if (!memeImage.isEmpty()) {
+            room.speak(memeImage);
+        }
     }
 
     private void checkCampfireConnection() throws IOException {
@@ -130,7 +154,7 @@ public class CampfireNotifier extends Notifier {
         campfire = new Campfire(subdomain, token, ssl);
         try {
             this.room = campfire.findRoomByName(roomName);
-            if ( this.room == null ) {
+            if (this.room == null) {
                 throw new IOException("Room '" + roomName + "' not found");
             }
         } catch (IOException e) {
@@ -155,10 +179,9 @@ public class CampfireNotifier extends Notifier {
         //  (3) the previous build failed and the current build succeeded.
         if (smartNotify) {
             AbstractBuild previousBuild = build.getPreviousBuild();
-            if (previousBuild == null ||
-                build.getResult() != Result.SUCCESS ||
-                previousBuild.getResult() != Result.SUCCESS)
-            {
+            if (previousBuild == null
+                    || build.getResult() != Result.SUCCESS
+                    || previousBuild.getResult() != Result.SUCCESS) {
                 publish(build);
             }
         } else {
