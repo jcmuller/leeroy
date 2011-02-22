@@ -74,5 +74,5 @@ some configuration setting wrong (while there is some validation of
 configuration settings, it's far from extensive).
 
 ### Thanks
-Thanks to [ChallengePost](challengepost.com) for sponsoring development and
+Thanks to [ChallengePost](http://challengepost.com) for sponsoring development and
 supporting open sourcing it from the start.
