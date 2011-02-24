@@ -1,7 +1,7 @@
 ## Leeroy for Jenkins (and sometimes Hudson)
 ### Post an image in campfire when the build fails (or doesn't)
 
-Leeroy takes no prisoners. Leeroy charges ahead and sounds the alarm in your campfire room when the build fails. Leeroy knows whodunnit. Leeroy even goes to memegenerator.net for you and makes a picture like this: http://flic.kr/p/9ky6JM .
+Leeroy takes no prisoners. Leeroy charges ahead and sounds the alarm in your campfire room when the build fails. Leeroy knows whodunnit. Leeroy even goes to [memegenerator.net](http://memegenerator.net) for you and makes a picture [like this](http://flic.kr/p/9ky6JM).
 
 ### Installation 
 
