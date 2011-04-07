@@ -49,34 +49,7 @@ some configuration setting wrong (while there is some validation of
 configuration settings, it's far from extensive).
 
 ### Thanks
-Thanks to [ChallengePost](http://challengepost.com) for sponsoring development and
+* Thanks to Jens Lukowski for creating the original plugin
+* Thanks to JGP for continuing development https://github.com/jgp/hudson_campfire_plugin
+* Thanks to [ChallengePost](http://challengepost.com) for sponsoring development and
 supporting open sourcing it from the start.
-
-### Backstory
-This is a fork of the plugin developed by Jens Lukowski. More information about
-the original plugin is available from the [Hudson
-wiki](http://wiki.hudson-ci.org/display/HUDSON/Campfire+Plugin) and [this blog
-post from
-Jens](http://schneide.wordpress.com/2009/10/26/a-campfire-plugin-for-hudson/).
-
-Development of the original plugin seemed to stall, so I forked it to address a
-number of issues and add some extra features...
-
-* Refactored the code to fix a number of null pointer exceptions.
-* Moved from per-job to global config.
-* Fixed issues with configuration details being lost after a hudson restart.
-* Tidied up jelly view for configuration form and added help files for each 
-  field.
-* Added a link to the build in notifications sent to campfire.
-
-Thanks to Joshua Krall, we now have support for SSL, and the plugin works after
-upgrading to Hudson ver. 1.363
-
-Recently, Brad Greenlee added a smart notification feature, which disables
-notifications for successful builds unless the previous build was unsuccessful,
-and I added commit info to build notifications and an option to customize the
-room to which notifications are sent per-project.
-
-Note: The plugin code is a bit of a mess, partly just because I don't have a 
-lot of Java experience, but also because I simply haven't got the time to tidy
-it up. It does work though, and we use it daily without any trouble.
