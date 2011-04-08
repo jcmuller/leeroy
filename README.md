@@ -1,4 +1,4 @@
-## Leeroy for Jenkins (and sometimes Hudson)
+## Leeroy for Jenkins CI (and sometimes Hudson)
 ### Post a meme in campfire when the build fails (or doesn't)
 
 Leeroy takes no prisoners. Leeroy charges ahead and sounds the alarm in your
