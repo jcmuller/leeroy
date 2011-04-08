@@ -1,5 +1,5 @@
 ## Leeroy for Jenkins (and sometimes Hudson)
-### Post an image in campfire when the build fails (or doesn't)
+### Post a meme in campfire when the build fails (or doesn't)
 
 Leeroy takes no prisoners. Leeroy charges ahead and sounds the alarm in your
 campfire room when the build fails. Leeroy knows whodunnit. Leeroy even goes to
@@ -8,7 +8,7 @@ this](http://flic.kr/p/9ky6JM).
 
 ### Installation 
 
-You can download a leeroy.hpi and then copy it to `/var/lib/hudson/plugins/` on
+You can download a leeroy.hpi from the downloads section and then copy it to `/var/lib/hudson/plugins/` on
 your Jenkins/Hudson server.
 
 Then either use the advanced tab of the plugin manager to upload the hpi file or
@@ -89,7 +89,7 @@ some configuration setting wrong (while there is some validation of
 configuration settings, it's far from extensive).
 
 ### Thanks
-* Thanks to Jens Lukowski for creating the original plugin
+* Thanks to Jens Lukowski for creating the original hudson campfire plugin
 * Thanks to JGP for continuing development https://github.com/jgp/hudson_campfire_plugin
-* Thanks to [ChallengePost](http://challengepost.com) for sponsoring development and
+* Thanks to [ChallengePost](http://challengepost.com) for sponsoring additional development and
 supporting open sourcing it from the start.
