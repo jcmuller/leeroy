@@ -8,7 +8,7 @@ this](http://flic.kr/p/9ky6JM).
 
 ### Installation 
 
-You can download a leeroy.hpi from the downloads section and then copy it to `/var/lib/hudson/plugins/` on
+You can download [leeroy.hpi](/downloads/jcmuller/leeroy/leeroy.hpi) from the downloads section and then copy it to `/var/lib/hudson/plugins/` on
 your Jenkins/Hudson server.
 
 Then either use the advanced tab of the plugin manager to upload the hpi file or
