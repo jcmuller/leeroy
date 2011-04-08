@@ -28,21 +28,15 @@ class MatchNotFoundException extends Exception {
  * @author jcmuller
  */
 public class MemeGenerator {
-    private String templateType = "AdviceDogSpinoff";
     private String templateID = "440017";
     private String generatorName = "Jacques-Cousteau";
 
     /**
      *
-     * @param templateType
      * @param templateID
      * @param generatorName
      */
-    public MemeGenerator(String templateType, String templateID, String generatorName) {
-        if (! "".equals(templateType)) {
-            this.templateType = templateType;
-        }
-
+    public MemeGenerator(String templateID, String generatorName) {
         if (! "".equals(templateID)) {
             this.templateID = templateID;
         }
@@ -68,6 +62,9 @@ public class MemeGenerator {
     public String generate(String topString, String bottomString) throws MatchNotFoundException {
         URL url;
         String result = "";
+
+        // Always use AdviceDogSpinoff
+        String templateType = "AdviceDogSpinoff";
 
         try {
             // Construct data
@@ -120,10 +117,10 @@ public class MemeGenerator {
         try {
             MemeGenerator meme;
 
-            meme = new MemeGenerator("AdviceDogSpinoff", "440017", "Jacques-Cousteau");
+            meme = new MemeGenerator("440017", "Jacques-Cousteau");
             System.out.println(meme.generate("Hello", "World!"));
 
-            meme = new MemeGenerator("AdviceDogSpinoff", "457085", "Jacques-Cousteau-FAILURE");
+            meme = new MemeGenerator("457085", "Jacques-Cousteau-FAILURE");
             System.out.println(meme.generate("Hello", "World!"));
         } catch (MatchNotFoundException ex) {
             System.err.println(ex.getMessage());

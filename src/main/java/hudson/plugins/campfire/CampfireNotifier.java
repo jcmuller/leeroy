@@ -47,12 +47,14 @@ public class CampfireNotifier extends Notifier {
     }
 
     public CampfireNotifier(String subdomain, String token, String room, String hudsonUrl,
-            boolean ssl, boolean smartNotify, String memeTemplateType, String memeTemplateID,
-            String memeGeneratorName, String memeTemplateIDFailure, String memeGeneratorNameFailure
+        boolean ssl, boolean smartNotify, String memeTemplateID, String
+        memeGeneratorName, String memeTemplateIDFailure, String
+        memeGeneratorNameFailure
     ) throws IOException {
         super();
-        initialize(subdomain, token, room, hudsonUrl, ssl, smartNotify, memeTemplateType, 
-                memeTemplateID, memeGeneratorName, memeTemplateIDFailure, memeGeneratorNameFailure);
+        initialize(subdomain, token, room, hudsonUrl, ssl, smartNotify,
+            memeTemplateID, memeGeneratorName, memeTemplateIDFailure,
+            memeGeneratorNameFailure);
     }
 
     public BuildStepMonitor getRequiredMonitorService() {
@@ -166,7 +168,6 @@ public class CampfireNotifier extends Notifier {
                 DESCRIPTOR.getHudsonUrl(),
                 DESCRIPTOR.getSsl(),
                 DESCRIPTOR.getSmartNotify(),
-                DESCRIPTOR.getMemeTemplateType(),
                 DESCRIPTOR.getMemeTemplateID(),
                 DESCRIPTOR.getMemeGeneratorName(),
                 DESCRIPTOR.getMemeTemplateIDFailure(),
@@ -174,9 +175,10 @@ public class CampfireNotifier extends Notifier {
          );
     }
 
-    private void initialize(String subdomain, String token, String roomName, String hudsonUrl, 
-            boolean ssl, boolean smartNotify, String memeTemplateType, String memeTemplateID,
-            String memeGeneratorName, String memeTemplateIDFailure, String memeGeneratorNameFailure
+    private void initialize(String subdomain, String token, String roomName,
+        String hudsonUrl, boolean ssl, boolean smartNotify, String
+        memeTemplateID, String memeGeneratorName, String memeTemplateIDFailure,
+        String memeGeneratorNameFailure
             ) throws IOException {
         campfire = new Campfire(subdomain, token, ssl);
         try {
@@ -197,8 +199,8 @@ public class CampfireNotifier extends Notifier {
         this.hudsonUrl = hudsonUrl;
         this.smartNotify = smartNotify;
 
-        this.memeSuccess = new MemeGenerator(memeTemplateType, memeTemplateID, memeGeneratorName);
-        this.memeFailure = new MemeGenerator(memeTemplateType, memeTemplateIDFailure, memeGeneratorNameFailure);
+        this.memeSuccess = new MemeGenerator(memeTemplateID, memeGeneratorName);
+        this.memeFailure = new MemeGenerator(memeTemplateIDFailure, memeGeneratorNameFailure);
     }
 
     @Override

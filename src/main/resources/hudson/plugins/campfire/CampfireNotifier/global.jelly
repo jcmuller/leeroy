@@ -2,47 +2,44 @@
   <!--
     This Jelly script is used to produce the global configuration option.
 
-    Hudson uses a set of tag libraries to provide uniformity in forms.
+    Jenkins uses a set of tag libraries to provide uniformity in forms.
     To determine where this tag is defined, first check the namespace URI,
-    and then look under $HUDSON/views/. For example, <f:section> is defined
-    in $HUDSON/views/lib/form/section.jelly.
+    and then look under $JENKINS/views/. For example, <f:section> is defined
+    in $JENKINS/views/lib/form/section.jelly.
 
     It's also often useful to just check other similar scripts to see what
     tags they use. Views are always organized according to its owner class,
     so it should be straightforward to find them.
   -->
-  <f:section title="Global Campfire Notifier Settings">
-    <f:entry title="Subdomain" help="${rootURL}/plugin/campfire/help-globalConfig-subdomain.html">
+  <f:section title="Global Leeroy Settings">
+    <f:entry title="Campfire Subdomain (mycompany, not mycompany.campfirenow.com)" help="${rootURL}/plugin/leeroy/help-globalConfig-subdomain.html">
         <f:textbox name="campfireSubdomain" value="${descriptor.getSubdomain()}" />
     </f:entry>
-    <f:entry title="API Token" help="${rootURL}/plugin/campfire/help-globalConfig-token.html">
+    <f:entry title="API Token" help="${rootURL}/plugin/leeroy/help-globalConfig-token.html">
         <f:textbox name="campfireToken" value="${descriptor.getToken()}" />
     </f:entry>
-    <f:entry title="Room" help="${rootURL}/plugin/campfire/help-globalConfig-room.html">
+    <f:entry title="Room" help="${rootURL}/plugin/leeroy/help-globalConfig-room.html">
         <f:textbox name="campfireRoom" value="${descriptor.getRoom()}" />
     </f:entry>
-    <f:entry title="Hudson Url" help="${rootURL}/plugin/campfire/help-globalConfig-hudsonUrl.html">
+    <f:entry title="Jenkins Url" help="${rootURL}/plugin/leeroy/help-globalConfig-hudsonUrl.html">
         <f:textbox name="campfireHudsonUrl" value="${descriptor.getHudsonUrl()}" />
     </f:entry>
-    <f:entry title="SSL" help="${rootURL}/plugin/campfire/help-globalConfig-ssl.html">
+    <f:entry title="SSL" help="${rootURL}/plugin/leeroy/help-globalConfig-ssl.html">
         <f:checkbox name="campfireSsl" checked="${descriptor.getSsl()}" />
     </f:entry>
-    <f:entry title="Enable Smart Notification" help="${rootURL}/plugin/campfire/help-globalConfig-smartNotify.html">
+    <f:entry title="Enable Smart Notification" help="${rootURL}/plugin/leeroy/help-globalConfig-smartNotify.html">
         <f:checkbox name="campfireSmartNotify" checked="${descriptor.getSmartNotify()}" />
     </f:entry>
-    <f:entry title="Meme template type" help="${rootURL}/plugin/campfire/help-globalConfig-memeTemplateType.html">
-        <f:textbox name="campfireMemeTemplateType" value="${descriptor.getMemeTemplateType()}" />
-    </f:entry>
-    <f:entry title="Meme template ID" help="${rootURL}/plugin/campfire/help-globalConfig-memeTemplateID.html">
+    <f:entry title="Meme template ID" help="${rootURL}/plugin/leeroy/help-globalConfig-memeTemplateID.html">
         <f:textbox name="campfireMemeTemplateID" value="${descriptor.getMemeTemplateID()}" />
     </f:entry>
-    <f:entry title="Meme generator name" help="${rootURL}/plugin/campfire/help-globalConfig-memeGeneratorName.html">
+    <f:entry title="Meme generator name" help="${rootURL}/plugin/leeroy/help-globalConfig-memeGeneratorName.html">
         <f:textbox name="campfireMemeGeneratorName" value="${descriptor.getMemeGeneratorName()}" />
     </f:entry>
-    <f:entry title="Meme template ID (Failures)" help="${rootURL}/plugin/campfire/help-globalConfig-memeTemplateID.html">
+    <f:entry title="Meme template ID (Failures)" help="${rootURL}/plugin/leeroy/help-globalConfig-memeTemplateID.html">
         <f:textbox name="campfireMemeTemplateIDFailure" value="${descriptor.getMemeTemplateIDFailure()}" />
     </f:entry>
-    <f:entry title="Meme generator name (Failures)" help="${rootURL}/plugin/campfire/help-globalConfig-memeGeneratorName.html">
+    <f:entry title="Meme generator name (Failures)" help="${rootURL}/plugin/leeroy/help-globalConfig-memeGeneratorName.html">
         <f:textbox name="campfireMemeGeneratorNameFailure" value="${descriptor.getMemeGeneratorNameFailure()}" />
     </f:entry>
   </f:section>

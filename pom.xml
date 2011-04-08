@@ -8,12 +8,12 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>org.jvnet.hudson.plugins</groupId>
-  <artifactId>campfire</artifactId>
+  <artifactId>leeroy</artifactId>
   <packaging>hpi</packaging>
-  <version>2.3.4-CP</version>
-  <name>Hudson Campfire Plugin</name>
-  <description>A Build status publisher that notifies channels on a Campfire server</description>
-  <url>http://wiki.hudson-ci.org/display/HUDSON/Campfire+Plugin</url>
+  <version>2.3.6-CP</version>
+  <name>Leeroy - A Jenkins Campfire Plugin</name>
+  <description>A Build status publisher that notifies channels on a Campfire server using memes from memegenerator.net</description>
+  <url>https://github.com/jcmuller/leeroy</url>
   <licenses>
   	<license><name>MIT license</name><comments>All source code is under the MIT license.</comments></license>
   </licenses>
